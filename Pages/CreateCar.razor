@@ -1,0 +1,136 @@
+﻿@page "/Create-Car"
+
+<PageTitle>Careate Car</PageTitle>
+
+<h1>The big cars</h1>
+
+@* <p role="status">Current count: @currentCount</p> *@
+<EditForm Model="@carOn" >
+    <div class="form-group">
+        <label for="Car Name">Name</label>
+        <InputText id="car-name" @bind-Value="carOn.Name"></InputText>
+        <ValidationMessage For= "@(()=>carOn.Name)" />
+    </div>
+    <div class="form-group">
+        <label for="Car Brand">Brand</label>
+        <InputText id="car-brand" @bind-Value="carOn.Brand"></InputText>
+        <ValidationMessage For="@(()=>carOn.Brand)"/>
+    </div>
+    <div class="form-group">
+        <label for="Car ImageUrl">Image URL</label>
+        <InputText id="car-brand" @bind-Value="carOn.ImageUrl"></InputText>
+        <ValidationMessage For="@(()=>carOn.ImageUrl)"></ValidationMessage>
+    </div>
+    <div class="form-group">
+        <label for="Car Color">Color</label>
+        <InputText id="car-color" @bind-Value="carOn.Color"></InputText>
+        <ValidationMessage For="@(()=>carOn.Color)"></ValidationMessage>
+    </div>
+    <div class="form-group">
+        <label for="Car Amount">Amount</label>
+        <InputNumber id="car-amount" @bind-Value="carOn.Amount"></InputNumber>
+        <ValidationMessage For="@(()=>carOn.Amount)"></ValidationMessage>
+    </div>
+    <Button type="submit" onclick="@addCar">
+        Create Car
+    </Button>
+    <Button type="submit" onclick="@update">
+        Update car
+    </Button>
+</EditForm>
+
+<Card>
+    <CardHeader>
+        <CardTittle>
+            New Car
+        </CardTittle>
+    </CardHeader>
+    @foreach (var eachCar in newCars)
+    {
+        <CardBody>
+            <img src = "@eachCar.ImageUrl" />
+            <p>@eachCar.Name</p>
+            <p>@eachCar.Brand</p>
+            <p>@eachCar.Color</p>
+            <p>@eachCar.Amount</p>
+        <button @onclick="()=> RemoveItem(eachCar)">Delete</button>
+        <button @onclick="()=> populateInput(eachCar)">update</button>
+        </CardBody>
+    }
+
+</Card>
+@* <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
+
+@code {
+
+    public Car carOn = new();
+    public List<Car> newCars = new ()
+    {
+        new Car()
+        {
+            Name = "BMW M3",
+            Brand = "BMW",
+            ImageUrl = "https://cdn.pixabay.com/photo/2016/11/18/17/46/bmw-1834980_960_720.jpg",
+            Color = "Blue",
+            Amount = 22229
+        },
+        new Car()
+        {
+            Name = "Audi R8",
+            Brand = "Audi",
+            ImageUrl = "https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_960_720.jpg",
+            Color = "Red",
+            Amount = 34567
+        },
+        new Car()
+        {
+            Name = "Tesla Model S",
+            Brand = "Tesla",
+            ImageUrl = "https://cdn.pixabay.com/photo/2016/02/13/12/26/tesla-1197815_960_720.jpg",
+            Color = "Black",
+            Amount = 45678
+        }
+    };
+
+    public void addCar()
+    {
+        if (carOn.Name != null)
+        {
+            newCars.Add(carOn);
+            carOn = new Car();
+        }
+
+    }
+
+    public void RemoveItem(Car carDelete)
+    {
+        newCars.Remove(carDelete);
+    }
+    public void update()
+    {
+        if ( carOn != null)
+        {
+        var carIndex = newCars.IndexOf(carOn);
+        carOn = new Car();
+        }
+    }
+    public void populateInput(Car CarToUpdate)
+    {
+        carOn = CarToUpdate;
+    }
+    public class Car
+    {
+        [Required]
+        public Guid Id {get; set;} = Guid.NewGuid();
+        [Required]
+        public string? Name {get; set;}
+        [Required]
+        public string? Brand {get; set;}
+        [Required]
+        public string? ImageUrl {get; set;}
+        [Required]
+        public string? Color {get; set;}
+        [Required]
+        public int Amount {get; set;}
+    }
+}

@@ -1,0 +1,76 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<Card>
+    <CardHeader>
+        <CardTittle>
+            New Car
+        </CardTittle>
+    </CardHeader>
+    @foreach (var eachCar in newCars)
+    {
+        <CardBody>
+            <img src = "@eachCar.ImageUrl" />
+            <p>@eachCar.Name</p>
+            <p>@eachCar.Brand</p>
+            <p>@eachCar.Color</p>
+            <p>@eachCar.Amount</p>
+        </CardBody>
+    }
+
+</Card>
+@* <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
+
+@code {
+
+    public Car carOn = new();
+    public List<Car> newCars = new ()
+    {
+        new Car()
+        {
+            Name = "BMW M3",
+            Brand = "BMW",
+            ImageUrl = "https://cdn.pixabay.com/photo/2016/11/18/17/46/bmw-1834980_960_720.jpg",
+            Color = "Blue",
+            Amount = 22229
+        },
+        new Car()
+        {
+            Name = "Audi R8",
+            Brand = "Audi",
+            ImageUrl = "https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_960_720.jpg",
+            Color = "Red",
+            Amount = 34567
+        },
+        new Car()
+        {
+            Name = "Tesla Model S",
+            Brand = "Tesla",
+            ImageUrl = "https://cdn.pixabay.com/photo/2016/02/13/12/26/tesla-1197815_960_720.jpg",
+            Color = "Black",
+            Amount = 45678
+        }
+    };
+
+    public void addCar()
+    {
+        newCars.Add(carOn);
+    }
+    public class Car
+    {
+        [Required]
+        public Guid Id {get; set;} = Guid.NewGuid();
+        [Required]
+        public string? Name {get; set;}
+        [Required]
+        public string? Brand {get; set;}
+        [Required]
+        public string? ImageUrl {get; set;}
+        [Required]
+        public string? Color {get; set;}
+        [Required]
+        public int Amount {get; set;}
+    }
+}
+
